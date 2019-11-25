@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Okta &hearts; Gov.uk</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0b0c0c" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
+    <link rel="stylesheet", href="/static/css/style.css">
+    <link rel="stylesheet", href="/static/css/gov.css">
+    <link rel="icon" sizes="16x16 32x32 64x64" href="/static/images/govfavico.png">
+</head>
+<body class="govuk-template__body">
+  {{> header}}
+  {{{body}}}
+  {{> footer}}
+  <script src="/govuk-frontend/all.js"></script>
+  <script>window.GOVUKFrontend.initAll()</script>
+</body>
+</html>
