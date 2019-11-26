@@ -1,5 +1,3 @@
-var atob = require('atob');
-
 class AgentModel {
     constructor(profileJson) {
         if(profileJson){
@@ -15,10 +13,6 @@ class AgentModel {
                 console.log(error)
             }
         }
-    }
-
-    getName(){
-        return this.firstName + " " + this.secondName
     }
 }
 

@@ -33,6 +33,11 @@ app.engine('hbs',  hbs( {
           } else {
               return "Invalid or empty token was parsed"
           }
+      },
+      select: function (value, options){
+        return options.fn(this).replace(
+          new RegExp(' value=\"' + value + '\"'),
+          '$& selected="selected"');
       }
   }
   } ) );
@@ -62,6 +67,7 @@ app.use(session({
 
 var auth = new auth();
 app.use(auth.setContext)
+app.use('/refresh',auth.handleRefresh)
 app.use('/authorization-code/callback',auth.handleCallback)
 
 app.use(async function (req,res,next){
@@ -79,6 +85,7 @@ var portalRouter = require('./routes/portal')(auth)
 var yourinfoRouter = require('./routes/yourinfo')(auth)
 var accountActivityRouter = require('./routes/accountActivity')(auth)
 var delegateAuthorityRouter = require('./routes/delegate')(auth)
+var authorityRouter = require('./routes/authority')(auth)
 app.use('/', indexRouter)
 app.use('/login', loginRouter)
 app.use('/forgotten-password',forgottenRouter)
@@ -87,6 +94,7 @@ app.use('/portal', portalRouter)
 app.use('/yourinfo', yourinfoRouter)
 app.use('/accountActivity', accountActivityRouter)
 app.use('/delegateAuthority',delegateAuthorityRouter)
+app.use('/authority',authorityRouter)
   
 app.use(function(req, res, next) {
     next(createError(404));

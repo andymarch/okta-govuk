@@ -63,6 +63,50 @@ class Auth {
         return next();
     }
 
+    async handleRefresh(req,res){
+        try{
+        var tokenresponse = await axios.post(process.env.ISSUER + '/v1/token',
+        qs.stringify({
+            "grant_type": "refresh_token",
+            "scope": process.env.SCOPES,
+            "refresh_token": req.session.user.refresh_token
+        }),
+        {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'authorization': "Basic "+base64.encode(process.env.CLIENT_ID+":"+process.env.CLIENT_SECRET)
+        }
+        }
+        )
+        if(tokenresponse.data.refresh_token){
+            req.session.user =
+            {
+                'id_token': tokenresponse.data.id_token,
+                'access_token': tokenresponse.data.access_token,
+                'refresh_token': tokenresponse.data.refresh_token
+            }
+        }
+        else{
+            req.session.user =
+            {
+                'id_token': tokenresponse.data.id_token,
+                'access_token': tokenresponse.data.access_token
+            }
+        }
+        res.redirect("/portal")
+        }
+        catch(err){
+            console.log(err)
+            // set locals, only providing error in development
+            res.locals.message = err.message;
+            res.locals.error = req.app.get('env') === 'development' ? err : {};
+    
+            // render the error page
+            res.status(err.status || 500);
+            res.render('error', { title: 'Error' });
+        } 
+    }
+
     async handleCallback (req,res,next){     
         if(req.query.state === req.session.state)
         {
@@ -93,10 +137,20 @@ class Auth {
                     }
                     }
                     )
-                    req.session.user =
-                    {
-                        'id_token': tokenresponse.data.id_token,
-                        'access_token': tokenresponse.data.access_token
+                    if(tokenresponse.data.refresh_token){
+                        req.session.user =
+                        {
+                            'id_token': tokenresponse.data.id_token,
+                            'access_token': tokenresponse.data.access_token,
+                            'refresh_token': tokenresponse.data.refresh_token
+                        }
+                    }
+                    else{
+                        req.session.user =
+                        {
+                            'id_token': tokenresponse.data.id_token,
+                            'access_token': tokenresponse.data.access_token
+                        }
                     }
                     res.redirect("/portal")
             }
