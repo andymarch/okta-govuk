@@ -1,0 +1,47 @@
+<div class="grid-row">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-xl">Your recent account activity</h1>
+            <p class="govuk-body">The table below shows the recent activity on
+            your account. If there is anything below which you believe to be
+            suspicious please change your password and ensure you have
+            multi-factor authentication enabled.</p>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <table class="govuk-table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__header" scope="col">
+                        Event Time
+                    </th>
+                    <th class="govuk-table__header" scope="col">
+                        Severity
+                    </th>
+                    <th class="govuk-table__header" scope="col">
+                        Actor
+                    </th>
+                    <th class="govuk-table__header" scope="col">
+                        Message
+                    </th>
+                    <th class="govuk-table__header" scope="col">
+                        Outcome
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                {{#each logs}}
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">{{this.eventTime}}</td>
+                    <td class="govuk-table__cell">{{this.severity}}</td>
+                    <td class="govuk-table__cell">{{this.actor}}</td>
+                    <td class="govuk-table__cell">{{this.msg}}</td>
+                    <td class="govuk-table__cell">{{this.outcome}}</td>
+                </tr> 
+                {{/each}}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>

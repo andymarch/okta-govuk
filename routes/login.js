@@ -8,25 +8,7 @@ module.exports = function (_oidc){
     oidc = _oidc;
   
   router.get('/',function(req, res, next) {
-    if(req.query.unlinked){
-      res.render('login',{err: "Your social account is not linked to an account, please login with your password first to associate a social account."});
-    }
-    else{
       res.render('login');
-    }
-  });
-
-  router.get('/social',function(req,res,next){
-    req.session.state = uuidv1();
-    res.redirect(process.env.ISSUER + 
-      '/v1/authorize?' +
-      'client_id=' + process.env.CLIENT_ID +
-      '&idp=' + process.env.FACEBOOK_IDP_ID +
-      '&response_type=code' +
-      '&redirect_uri='+process.env.REDIRECT_URI + 
-      '&scope=' + process.env.SCOPES + 
-      '&state=' + req.session.state+
-      '&nonce=' + uuidv1())
   });
 
   router.post('/', async function(req, res, next) {

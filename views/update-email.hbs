@@ -1,0 +1,33 @@
+<div class="govuk-grid-row">
+    <a href="/yourinfo" class="govuk-back-link">Back</a>
+    <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form action="/yourinfo/update-email" method="post">
+            <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                <h1 class="govuk-fieldset__heading">
+                Update your email
+                </h1>
+            </legend>
+            <div class="govuk-form-group">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="email">
+                            Email address
+                        </label>
+                        <span id="email-hint" class="govuk-hint">
+                            You can use this as an identifier to login and we may send
+                            information to this address
+                        </span>
+                        <input class="govuk-input" id="email" name="email" type="email" aria-describedby="email-hint" autocomplete="email" spellcheck="false" value="{{email}}">
+                    </div>
+                     <div class="govuk-form-group">
+                        <button class="govuk-button" >
+                        Continue
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    </div> 
+</div>
