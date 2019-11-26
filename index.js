@@ -72,7 +72,11 @@ app.use(async function (req,res,next){
 })
 
 var indexRouter = require('./routes/index')(auth)
+var loginRouter = require('./routes/login')(auth)
+var portalRouter = require('./routes/portal')(auth)
 app.use('/', indexRouter)
+app.use('/login', loginRouter)
+app.use('/portal', portalRouter)
   
 app.use(function(req, res, next) {
     next(createError(404));

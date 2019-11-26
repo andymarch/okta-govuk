@@ -1,0 +1,68 @@
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form action="/login" method="post">
+        <input type="hidden" id="csrf" name="csrf" type="text" value="{{csrfToken}}">
+        <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+            <h1 class="govuk-fieldset__heading">
+            Login to your account
+            </h1>
+        </legend>
+        <div class="govuk-form-group">
+            <label class="govuk-label" for="crn">
+                Your account identifier
+            </label>
+            <input class="govuk-input" id="crn" name="crn"
+            type="text">
+            <details class="govuk-details" data-module="govuk-details">
+            <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                What's my account identifier
+                </span>
+            </summary>
+            <div class="govuk-details__text">
+                You can login with email address if you have used the service
+                before or you can use your Customer Reference Number which is
+                included on all correspondance from us.
+            </div>
+            </details>
+        </div>
+        <div class="govuk-form-group">
+            <label class="govuk-label" for="password">
+                Password
+            </label>
+            <input type="password" class="govuk-input" id="password"
+            name="password" type="text">
+            <a class="govuk-link" href="/forgotten-password">Forgetten your password?</a>
+        </div>
+        <div class="govuk-form-group">
+            <button class="govuk-button" >
+            Continue
+            </button>
+        </div>
+        {{#if err}}
+        <span id="authentication-error" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> {{err}}
+        </span>
+        {{/if}}
+        </div>
+        </fieldset>
+        </form>
+
+</div>
+<div class="govuk-grid-row">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+        <h1 class="govuk-fieldset__heading">
+            Login with Social Provider
+        </h1>
+        <p class="govuk-body">If you have previously registered a social
+        identity with your account you can login with this identity.
+        </p>
+    </legend>
+    <div class="govuk-grid-column-two-thirds">
+            <a href="/login/social" role="button" draggable="false" class="govuk-button govuk-button" data-module="govuk-button">
+            Continue
+        </a>
+    </div>
+</div>

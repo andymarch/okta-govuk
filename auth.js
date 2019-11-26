@@ -98,7 +98,7 @@ class Auth {
                         'id_token': tokenresponse.data.id_token,
                         'access_token': tokenresponse.data.access_token
                     }
-                    res.redirect("/myslc")
+                    res.redirect("/portal")
             }
             catch(err){
                 console.log(err)
