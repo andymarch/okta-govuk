@@ -78,7 +78,6 @@ var changeRouter = require('./routes/changepwd')(auth)
 var portalRouter = require('./routes/portal')(auth)
 var yourinfoRouter = require('./routes/yourinfo')(auth)
 var accountActivityRouter = require('./routes/accountActivity')(auth)
-var attestationRouter = require('./routes/attestation')(auth)
 app.use('/', indexRouter)
 app.use('/login', loginRouter)
 app.use('/forgotten-password',forgottenRouter)
@@ -86,7 +85,6 @@ app.use('/change-password',changeRouter)
 app.use('/portal', portalRouter)
 app.use('/yourinfo', yourinfoRouter)
 app.use('/accountActivity', accountActivityRouter)
-app.use('/attestation',attestationRouter)
   
 app.use(function(req, res, next) {
     next(createError(404));
