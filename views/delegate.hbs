@@ -1,0 +1,47 @@
+<div class="grid-row">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Your Delegations</h1>
+            <p class="govuk-body">These individuals are able to act on your
+            behalf with this service.</p>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-third">
+            <div>
+                <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                        Name
+                    </dt>
+                    <dt class="govuk-summary-list__key">
+                        Contact Address
+                    </dt>
+                    <dd class="govuk-summary-list__actions">
+                    </dd>
+                </div>
+                {{#each delegates}}
+                <div class="govuk-summary-list__row">
+                    <dd class="govuk-summary-list__value">
+                    <p class="govuk-body">{{this.firstName}} {{this.secondName}}</p>
+                    </dd>
+                    <dd class="govuk-summary-list__value">
+                    <p class="govuk-body">{{this.email}}</p>
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="/delegateAuthority/remove/{{this.id}}">
+                        Remove <span class="govuk-visually-hidden">delegate</span>
+                    </a>
+                    </dd>
+                </div>
+                {{/each}}
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <a class="govuk-link" href="/delegateAuthority/add">
+            Add delegate
+        </a>
+    </div>
+</div>

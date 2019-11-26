@@ -16,8 +16,9 @@
 <body class="govuk-template__body">
     {{> header}}
     {{> demobanner}}
+    <!-- this is not truely compliant as we need a noscript version -->
     <div class="govuk-width-container">
-        <a href="/portal" class="govuk-back-link">Back</a>
+        <a href="javascript:history.back()" class="govuk-back-link">Back</a>
     </div>
     <main class="govuk-main-wrapper " id="main-content" role="main">
         <div class="govuk-width-container">

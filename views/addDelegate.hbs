@@ -1,21 +1,21 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <form action="/yourinfo/update-email" method="post">
+        <form action="/delegateAuthority/add" method="post">
             <fieldset class="govuk-fieldset">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
                 <h1 class="govuk-fieldset__heading">
-                Update your email
+                Add New Delegate
                 </h1>
             </legend>
             <div class="govuk-form-group">
                     <div class="govuk-form-group">
                         <label class="govuk-label" for="email">
-                            Email address
+                            Delegate's Email address
                         </label>
                         <span id="email-hint" class="govuk-hint">
-                            You can use this as an identifier to login and we may send
-                            information to this address
+                            Email address of the user you wish to delegate
+                            access to.
                         </span>
                         <input class="govuk-input" id="email" name="email" type="email" aria-describedby="email-hint" autocomplete="email" spellcheck="false" value="{{email}}">
                     </div>
