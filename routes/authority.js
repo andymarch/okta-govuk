@@ -4,6 +4,7 @@ const axios = require('axios');
 var oidc = require('@okta/oidc-middleware');
 const uuidv1 = require('uuid/v1');
 const auth = require('../auth')
+var atob = require('atob');
 
 
 module.exports = function (_oidc){
@@ -28,13 +29,27 @@ module.exports = function (_oidc){
   });
 
   router.post('/',oidc.ensureAuthenticated(),async function(req, res, next) {
+
+      var identifier = req.sessionID;
+      if(req.session.user.refresh_token){
+        var base64 = this.idToken.split('.')[1];
+        var decoded = JSON.parse(atob(base64))
+        identifier = decoded.jti;
+      }
       try{
           await axios.post(process.env.SERVICE_URL + '/agent?id='+ req.userContext.userinfo.sub,
           {
             entityid: req.body.entity,
-            sessionid: req.sessionID
+            sessionid: identifier
           })
-          res.redirect('/refresh')
+          if(req.session.user.refresh_token){
+            res.redirect('/refresh')
+          }
+          else{
+            //refresh the token with redirect if refresh token is not available
+            res.status(err.status || 500);
+            res.render('error', { title: 'Get with redirect is not implemented.' });
+          }
       }
       catch(err){
         console.log(err)
