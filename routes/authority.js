@@ -32,7 +32,7 @@ module.exports = function (_oidc){
 
       var identifier = req.sessionID;
       if(req.session.user.refresh_token){
-        var base64 = this.idToken.split('.')[1];
+        var base64 = this.req.session.user.refresh_token.split('.')[1];
         var decoded = JSON.parse(atob(base64))
         identifier = decoded.jti;
       }
