@@ -2,6 +2,7 @@ const axios = require('axios')
 const qs = require('querystring')
 var base64 = require('base-64');
 const OktaJwtVerifier = require('@okta/jwt-verifier');
+const uuidv1 = require('uuid/v1');
 
 const oktaJwtVerifier = new OktaJwtVerifier({
     issuer: process.env.ISSUER,
@@ -105,6 +106,22 @@ class Auth {
             res.status(err.status || 500);
             res.render('error', { title: 'Error' });
         } 
+    }
+
+    async handleReauthorize (req,res){
+        if(req.query.state){
+            req.session.state = req.query.state
+        }
+        else{ 
+            req.session.state = uuidv1();
+        }
+        res.redirect(process.env.ISSUER + 
+          '/v1/authorize?' +
+          'client_id=' + process.env.CLIENT_ID +
+          '&response_type=code' +
+          '&redirect_uri='+process.env.REDIRECT_URI + 
+          '&scope=' + process.env.SCOPES + 
+          '&state=' + req.session.state)
     }
 
     async handleCallback (req,res,next){     

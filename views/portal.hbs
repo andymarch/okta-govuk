@@ -16,6 +16,17 @@
         gravida. Ut in feugiat purus, efficitur aliquet neque. 
         </p>
     </div>
+    <div class="govuk-grid-column-full">
+            <h1 class="govuk-heading-m">View your tokens</h1>
+            <p class="govuk-body">Decode the tokens which have been provided by
+            the IDP to describe you and your access..</p>
+            <a href="/yourtokens" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
+            Start now
+            <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" role="presentation" focusable="false">
+                <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+            </svg>
+            </a>
+        </div>
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-m">Manage your information</h1>
             <p class="govuk-body">Update the information held about you.</p>
@@ -36,9 +47,9 @@
             </svg>
             </a>
         </div>
-        {{#if user.isEntity}}
+        {{#ifCond user.canDelegate '==' 'True'}}
         <div class="govuk-grid-column-full">
-            <h1 class="govuk-heading-m">Delegate authority</h1>
+            <h1 class="govuk-heading-m">Manage delegated authority</h1>
             <p class="govuk-body">Grant agents authority to act on your behalf.</p>
             <a href="/delegateAuthority" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
             Start now
@@ -49,7 +60,7 @@
         </div>
         {{else}}
         <div class="govuk-grid-column-full">
-            <h1 class="govuk-heading-m">Exercise authority</h1>
+            <h1 class="govuk-heading-m">Exercise delegated authority</h1>
             <p class="govuk-body">Restablish this session with the context of an
             entity which has granted authority.</p>
             <a href="/authority" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
@@ -59,7 +70,7 @@
             </svg>
             </a>
         </div>
-        {{/if}}
+        {{/ifCond}}
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-m">Logout</h1>
             <p class="govuk-body">

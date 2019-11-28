@@ -38,7 +38,33 @@ app.engine('hbs',  hbs( {
         return options.fn(this).replace(
           new RegExp(' value=\"' + value + '\"'),
           '$& selected="selected"');
-      }
+      },
+      ifCond: function (v1, operator, v2, options) {
+        switch (operator) {
+            case '==':
+                return (v1 == v2) ? options.fn(this) : options.inverse(this);
+            case '===':
+                return (v1 === v2) ? options.fn(this) : options.inverse(this);
+            case '!=':
+                return (v1 != v2) ? options.fn(this) : options.inverse(this);
+            case '!==':
+                return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+            case '<':
+                return (v1 < v2) ? options.fn(this) : options.inverse(this);
+            case '<=':
+                return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+            case '>':
+                return (v1 > v2) ? options.fn(this) : options.inverse(this);
+            case '>=':
+                return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+            case '&&':
+                return (v1 && v2) ? options.fn(this) : options.inverse(this);
+            case '||':
+                return (v1 || v2) ? options.fn(this) : options.inverse(this);
+            default:
+                return options.inverse(this);
+        }
+      },
   }
   } ) );
 app.set('view engine', 'hbs');
@@ -68,6 +94,7 @@ app.use(session({
 var auth = new auth();
 app.use(auth.setContext)
 app.use('/refresh',auth.handleRefresh)
+app.use('/reauth',auth.handleReauthorize)
 app.use('/authorization-code/callback',auth.handleCallback)
 
 app.use(async function (req,res,next){
@@ -86,6 +113,7 @@ var yourinfoRouter = require('./routes/yourinfo')(auth)
 var accountActivityRouter = require('./routes/accountActivity')(auth)
 var delegateAuthorityRouter = require('./routes/delegate')(auth)
 var authorityRouter = require('./routes/authority')(auth)
+var tokenRouter = require('./routes/tokens')(auth)
 app.use('/', indexRouter)
 app.use('/login', loginRouter)
 app.use('/forgotten-password',forgottenRouter)
@@ -95,6 +123,7 @@ app.use('/yourinfo', yourinfoRouter)
 app.use('/accountActivity', accountActivityRouter)
 app.use('/delegateAuthority',delegateAuthorityRouter)
 app.use('/authority',authorityRouter)
+app.use('/yourtokens',tokenRouter)
   
 app.use(function(req, res, next) {
     next(createError(404));
