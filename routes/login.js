@@ -3,6 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 var oidc = require('@okta/oidc-middleware');
 const uuidv1 = require('uuid/v1');
+const passwordTester = require('../PwnedPasswordTester')
 
 module.exports = function (_oidc){
     oidc = _oidc;
@@ -36,6 +37,28 @@ module.exports = function (_oidc){
       },{
         'x-forwarded-for': req.headers['x-forwarded-for'] || req.connection.remoteAddress
       })
+
+      var useridresponse = await axios.get(process.env.TENANT_URL + 
+        '/api/v1/users/'+username)
+      var userid = useridresponse.data.id
+
+      if(authNresponse.data.status == "SUCCESS"){
+        var result = await passwordTester.isPwnedPassword(req.body.password)
+        if (result){
+          //add the user to the MFA enforcement group and rechallenge the authn
+          await axios.put(process.env.TENANT_URL + 
+            '/api/v1/groups/'+process.env.MFA_GROUPID+'/users/'+userid)
+
+          authNresponse = await axios.post(process.env.TENANT_URL + 
+            '/api/v1/authn',{
+                "username": username,
+                "password": req.body.password
+          },{
+            'x-forwarded-for': req.headers['x-forwarded-for'] || req.connection.remoteAddress
+          })
+        }
+      }
+
       if(authNresponse.data.status == "SUCCESS"){
         req.session.state = uuidv1();
         res.redirect(process.env.ISSUER + 
@@ -48,17 +71,13 @@ module.exports = function (_oidc){
           '&state=' + req.session.state)
       } 
       else if(authNresponse.data.status == "PASSWORD_EXPIRED"){
-        var getuserid = await axios.get(process.env.TENANT_URL + 
-          '/api/v1/users/'+username)
-        res.render('expired',{uid: getuserid.data.id,login:username,oldpwd:req.body.password})
+        res.render('expired',{uid: userid,login:username,oldpwd:req.body.password})
       } else if(authNresponse.data.status == "MFA_ENROLL"){
-        console.log(authNresponse.data)
         req.session.username = username
         req.session.uuid = authNresponse.data._embedded.user.id
         req.session.stateToken = authNresponse.data.stateToken
         res.redirect("/login/MFA/enroll")
       } else if(authNresponse.data.status == "MFA_REQUIRED"){
-        console.log(authNresponse)
         req.session.username = username
         req.session.uuid = authNresponse.data._embedded.user.id
         req.session.emailfactorid = authNresponse.data._embedded.factors[0].id
