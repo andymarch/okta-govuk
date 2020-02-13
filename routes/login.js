@@ -80,9 +80,9 @@ module.exports = function (_oidc){
       } else if(authNresponse.data.status == "MFA_REQUIRED"){
         req.session.username = username
         req.session.uuid = authNresponse.data._embedded.user.id
-        req.session.emailfactorid = authNresponse.data._embedded.factors[0].id
+        req.session.factors = authNresponse.data._embedded.factors
         req.session.stateToken = authNresponse.data.stateToken
-        res.redirect("/login/MFA/challenge?provider="+authNresponse.data._embedded.factors[0].provider)
+        res.redirect("/login/MFA/challenge")
       } else {
         throw authNresponse.data.status
       }
@@ -113,19 +113,34 @@ module.exports = function (_oidc){
 
   router.get('/MFA/challenge', async function(req, res, next) {
     try{
+      var usergroups = await axios.get(process.env.TENANT_URL + 
+        '/api/v1/users/'+req.session.uuid+'/groups')
+      var hibpGroup = false;
+      usergroups.data.forEach(element => {
+        if(element.id == process.env.MFA_GROUPID){
+          hibpGroup = true;
+        }
+      });
+
+      var factor = req.session.factors.find(item => {
+          return item.factorType == 'token:software:totp'
+      })
+      if(factor== null){
+        console.log("no otp going to email")
+        factor = req.session.factors.find(item => {
+          return item.factorType == 'email'
+      })
+      }
+      req.session.factorid = factor.id
+
     var update = await axios.post(process.env.TENANT_URL + 
-      '/api/v1/users/'+req.session.uuid+'/factors/'+req.session.emailfactorid+'/verify',{},
+      '/api/v1/users/'+req.session.uuid+'/factors/'+req.session.factorid+'/verify',{},
       {
         headers: {
         'Content-Type': 'application/json',
         }
       })
-      if(req.query.provider === "GOOGLE" ||req.query.provider === "OKTA" ){
-        res.render('factorChallenge',{totp:true, challengeProvider:req.query.provider})
-      }
-      else{
-        res.render('factorChallenge',{email:req.session.username})
-      }
+      res.render('factorChallenge',{factor:factor, hibp: hibpGroup})
     
     } catch(err){
       console.log(err)
@@ -142,7 +157,7 @@ module.exports = function (_oidc){
    router.post('/MFA/challenge', async function(req, res, next) {
      try {
     var factorChallenge = await axios.post(process.env.TENANT_URL + 
-      '/api/v1/authn/factors/'+req.session.emailfactorid+'/verify',{
+      '/api/v1/authn/factors/'+req.session.factorid+'/verify',{
         'passCode':req.body.password,
         'stateToken': req.session.stateToken
       },{

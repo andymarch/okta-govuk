@@ -7,20 +7,33 @@
             Identity Verification
             </h1>
         </legend>
+        {{#if hibp}}
+        <div class="govuk-warning-text">
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+            Your password has been found in leaked credentials from other
+            services. 
+             <br>
+            Please change your password. To keep your account secure until 
+            you do, you must complete an additional factor challenge to access this service. 
+        </strong>
+        </div>
+        {{/if}}
         <div class="govuk-form-group">
             <label class="govuk-label" for="password">
                 One time code
             </label>
-            {{#if totp}}
+            {{#ifCond factor.factorType '==' 'token:software:totp'}}
             <span id="password-hint" class="govuk-hint">
-            Please enter the one time code from your {{challengeProvider}} authenticator application.
+            Please enter the one time code from your {{factor.vendorName}} authenticator application.
             </span>
             {{else}}
             <span id="password-hint" class="govuk-hint">
                 Please enter the one time code sent to your registered email
-                address {{email}}.
+                address {{factor.profile.email}}.
             </span>
-            {{/if}}
+            {{/ifCond}}
             <input type="password" class="govuk-input" id="password"
             name="password" type="text">
         </div>
