@@ -101,8 +101,8 @@ module.exports = function (_oidc){
         'Content-Type': 'application/json',
         }
       })
-      if(req.query.provider === "GOOGLE"){
-        res.render('factorChallenge',{totp:true})
+      if(req.query.provider === "GOOGLE" ||req.query.provider === "OKTA" ){
+        res.render('factorChallenge',{totp:true, challengeProvider:req.query.provider})
       }
       else{
         res.render('factorChallenge',{email:req.session.username})
