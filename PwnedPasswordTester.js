@@ -11,12 +11,14 @@ const crypto = require('crypto')
         var hibpResponse = await axios.get( 
             'https://api.pwnedpasswords.com/range/'+prefix,
         );
-        if(hibpResponse.data.includes(suffix.toUpperCase() )){
-            return true;
+
+        var pattern = new RegExp("("+suffix.toUpperCase()+"):([0-9]+)","g")
+        match = pattern.exec(hibpResponse.data)
+        if(match != null){
+            console.log(match[2])
+            return match[2]
         }
-        else{
-            return false;
-        }
+        else return 0
     }
 
 module.exports = {isPwnedPassword}

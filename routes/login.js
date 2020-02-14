@@ -42,20 +42,23 @@ module.exports = function (_oidc){
         '/api/v1/users/'+username)
       var userid = useridresponse.data.id
 
-      if(authNresponse.data.status == "SUCCESS"){
+      if(authNresponse.data.status == "SUCCESS" || authNresponse.data.status == "MFA_REQUIRED"){
         var result = await passwordTester.isPwnedPassword(req.body.password)
-        if (result){
-          //add the user to the MFA enforcement group and rechallenge the authn
-          await axios.put(process.env.TENANT_URL + 
-            '/api/v1/groups/'+process.env.MFA_GROUPID+'/users/'+userid)
+        if (result>0){
+          req.session.hibpScore = result;
+          if(authNresponse.data.status == "SUCCESS"){
+            //add the user to the MFA enforcement group and rechallenge the authn
+            await axios.put(process.env.TENANT_URL + 
+              '/api/v1/groups/'+process.env.MFA_GROUPID+'/users/'+userid)
 
-          authNresponse = await axios.post(process.env.TENANT_URL + 
-            '/api/v1/authn',{
-                "username": username,
-                "password": req.body.password
-          },{
-            'x-forwarded-for': req.headers['x-forwarded-for'] || req.connection.remoteAddress
-          })
+            authNresponse = await axios.post(process.env.TENANT_URL + 
+              '/api/v1/authn',{
+                  "username": username,
+                  "password": req.body.password
+            },{
+              'x-forwarded-for': req.headers['x-forwarded-for'] || req.connection.remoteAddress
+            })
+          }
         }
       }
 
@@ -113,20 +116,16 @@ module.exports = function (_oidc){
 
   router.get('/MFA/challenge', async function(req, res, next) {
     try{
-      var usergroups = await axios.get(process.env.TENANT_URL + 
-        '/api/v1/users/'+req.session.uuid+'/groups')
-      var hibpGroup = false;
-      usergroups.data.forEach(element => {
-        if(element.id == process.env.MFA_GROUPID){
-          hibpGroup = true;
-        }
-      });
+      
+      var hibp = 0
+      if(req.session.hibpScore){
+        hibp = req.session.hibpScore
+      }
 
       var factor = req.session.factors.find(item => {
           return item.factorType == 'token:software:totp'
       })
       if(factor== null){
-        console.log("no otp going to email")
         factor = req.session.factors.find(item => {
           return item.factorType == 'email'
       })
@@ -140,7 +139,7 @@ module.exports = function (_oidc){
         'Content-Type': 'application/json',
         }
       })
-      res.render('factorChallenge',{factor:factor, hibp: hibpGroup})
+      res.render('factorChallenge',{factor:factor, hibp: hibp})
     
     } catch(err){
       console.log(err)
