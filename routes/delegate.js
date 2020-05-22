@@ -9,15 +9,10 @@ module.exports = function (_oidc){
 
   router.get('/', oidc.ensureAuthenticated(), async function(req, res, next) {
     try{      
-        var response = await axios.get(process.env.TENANT_URL + 
-          '/api/v1/users/'+req.userContext.userinfo.sub)
-        var agents = []
-        for(var entry in response.data.profile.delegatedAgents){
-          var agent = await axios.get(process.env.TENANT_URL + 
-            '/api/v1/users/'+ response.data.profile.delegatedAgents[entry])
-            agents.push(new agentmodel(agent.data))
-          }
-        res.render('delegate',{layout:'subpage',delegates: agents});
+        var response = await axios.get(
+          process.env.SERVICE_URL + '/entity/agents',
+          { headers: { Authorization: "Bearer " + req.session.user.access_token } })
+        res.render('delegate',{layout:'subpage',delegates:  response.data.agents});
       }
       catch(err){
         console.log(err)
@@ -37,10 +32,10 @@ module.exports = function (_oidc){
 
   router.post('/add', oidc.ensureAuthenticated(), async function(req,res,next){
     try{
-      var userresponse = await axios.get(process.env.TENANT_URL + 
-        '/api/v1/users/'+req.body.email)
-      await axios.post(process.env.SERVICE_URL + 
-        '/entity/agents/?id='+ req.userContext.userinfo.sub+"&agentid="+userresponse.data.id)
+      await axios.post(
+        process.env.SERVICE_URL + '/entity/agents/add',
+        { agentid: req.body.email },
+        { headers: { Authorization: "Bearer " + req.session.user.access_token } })
       res.redirect('/delegateAuthority')
     } catch (err){
       console.log(err)
@@ -55,9 +50,22 @@ module.exports = function (_oidc){
   })
 
   router.get('/remove/:id', oidc.ensureAuthenticated(), async function(req, res, next) {
-    await axios.delete(process.env.SERVICE_URL + 
-      '/entity/agents/?id='+ req.userContext.userinfo.sub+"&agentid="+req.params.id)
-    res.redirect('/delegateAuthority')
+    try {
+      await axios.post(
+        process.env.SERVICE_URL + '/entity/agents/remove',
+        { agentid: req.params.id },
+        { headers: { Authorization: "Bearer " + req.session.user.access_token } },)
+      res.redirect('/delegateAuthority')
+    } catch (err){
+      console.log(err)
+      // set locals, only providing error in development
+      res.locals.message = err.message;
+      res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+      // render the error page
+      res.status(err.status || 500);
+      res.render('error', { title: 'Error' });
+    }
   })
 
 

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 var oidc = require('@okta/oidc-middleware');
-const uuidv1 = require('uuid/v1');
 const qs = require('querystring')
 
 
@@ -11,8 +10,7 @@ module.exports = function (_oidc){
   
   router.get('/',oidc.ensureAuthenticated(),async function(req, res, next) {
     try{
-      console.log(process.env.SERVICE_URL + '/agent?id='+ req.userContext.userinfo.sub)
-    var resp = await axios.get(process.env.SERVICE_URL + '/agent?id='+ req.userContext.userinfo.sub)
+     var resp = await axios.get(process.env.SERVICE_URL + '/agent',{headers:{Authorization: "Bearer "+req.session.user.access_token}})
       res.render('authority',{layout: 'subpage', entities: resp.data});
     }
     catch(err){
@@ -29,13 +27,12 @@ module.exports = function (_oidc){
 
   router.post('/',oidc.ensureAuthenticated(),async function(req, res, next) {
 
-      var identifier = uuidv1();
       try{
-          await axios.post(process.env.SERVICE_URL + '/agent?id='+ req.userContext.userinfo.sub,
+          var response = await axios.post(process.env.SERVICE_URL + '/agent',
           {
             entityid: req.body.entity,
-            sessionid: identifier
-          })
+          },{headers:{Authorization: "Bearer "+req.session.user.access_token}})
+          var identifier = response.data.id
           if(req.session.user.refresh_token){
             res.redirect('/refresh')
           }
