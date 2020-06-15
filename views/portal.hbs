@@ -47,7 +47,6 @@
             </svg>
             </a>
         </div>
-        {{#ifCond user.canDelegate '==' 'True'}}
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-m">Manage delegated authority</h1>
             <p class="govuk-body">Grant agents authority to act on your behalf.</p>
@@ -58,7 +57,6 @@
             </svg>
             </a>
         </div>
-        {{else}}
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-m">Exercise delegated authority</h1>
             <p class="govuk-body">Restablish this session with the context of an
@@ -70,7 +68,6 @@
             </svg>
             </a>
         </div>
-        {{/ifCond}}
         <div class="govuk-grid-column-full">
             <h1 class="govuk-heading-m">Logout</h1>
             <p class="govuk-body">

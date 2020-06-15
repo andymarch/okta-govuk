@@ -1,11 +1,11 @@
 <div class="grid-row">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-xl">Your Delegations</h1>
-            <p class="govuk-body">These individuals are able to act on your
-            behalf with this service.</p>
+            <h1 class="govuk-heading-xl">Delegate Authority</h1>
+            <p class="govuk-body">Allow another individual to access elements of your account on your behalf.</p>
         </div>
     </div>
+    {{#ifCond user.canDelegate '==' 'True'}}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-third">
             <div>
@@ -44,4 +44,22 @@
             Add delegate
         </a>
     </div>
+    <div class="govuk-grid-row">
+        <a class="govuk-link" href="/delegateAuthority/disable">
+            Remove all delegated access
+        </a>
+    </div>
+    {{else}}
+     <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-third">
+            <p class="govuk-body">
+                Your account is not currently enabled for delegated access.
+                <form action="/delegateAuthority/enable">
+                    <button class="govuk-button" data-module="govuk-button">Enable delegated access</button>
+                </form>
+                
+            </p>
+        </div>
+    </div>
+    {{/ifCond}}
 </div>

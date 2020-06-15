@@ -11,15 +11,15 @@
             <div class="govuk-form-group">
                     <div class="govuk-form-group">
                         <label class="govuk-label" for="email">
-                            Select Entity
+                            Select delegator
                         </label>
                         <span id="email-hint" class="govuk-hint">
-                            From the menu below pick the organisation you need to represent.
+                            From the menu below pick the individual or organisation you need to represent.
                         </span>
                         <select class="govuk-select" id="entity" name="entity"
                         aria-describedby="entity-hint" >
                         {{#each entities}}
-                            <option value="{{this.id}}">{{this.profile.entityName}} : {{this.profile.entityId}}</option>
+                            <option value="{{this.id}}">{{this.displayName}}</option>
                         {{/each}}
                         </select>
                     </div>

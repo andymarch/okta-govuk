@@ -36,6 +36,7 @@ class Auth {
                     sub : "",
                     family_name : "",
                     givenName: "",
+                    canDelegate: ""
                 },
                 tokens: {
                     access_token: "",
@@ -45,15 +46,20 @@ class Auth {
         }
         if(req.session.user){
             var atob = require('atob');
-              var base64Url = req.session.user.id_token.split('.')[1];
-              var base64 = base64Url.replace('-', '+').replace('_', '/');
-              var token = JSON.parse(atob(base64))
+              var idbase64Url = req.session.user.id_token.split('.')[1];
+              var idbase64 = idbase64Url.replace('-', '+').replace('_', '/');
+              var idtoken = JSON.parse(atob(idbase64))
+
+              var accessbase64Url = req.session.user.access_token.split('.')[1];
+              var accessbase64 = accessbase64Url.replace('-', '+').replace('_', '/');
+              var accesstoken = JSON.parse(atob(accessbase64))
             req.userContext = {
                 'userinfo': {
-                    'sub' : token.sub,
-                    'family_name' : token.name,
-                    'givenName': token.name,
-                    'preferred_username': token.preferred_username
+                    'sub' : idtoken.sub,
+                    'family_name' : idtoken.name,
+                    'givenName': idtoken.name,
+                    'preferred_username': idtoken.preferred_username,
+                    'canDelegate': accesstoken.can_delegate
                 },
                 'tokens': {
                     'access_token': req.session.user.access_token,
