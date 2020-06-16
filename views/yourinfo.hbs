@@ -1,58 +1,52 @@
-<div class="grid-row">
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-xl">Your Information</h1>
-            <p class="govuk-body"></p>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Your Information</h1>
+        <p class="govuk-body"></p>
+    <div>
+        <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            Name
+            </dt>
+            <dd class="govuk-summary-list__value">
+            {{name}}
+            </dd>
+            <dd class="govuk-summary-list__actions">
+            </dd>
         </div>
-    </div>
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-third">
-        <div>
-            <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                Name
-                </dt>
-                <dd class="govuk-summary-list__value">
-                {{name}}
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                Date of birth
-                </dt>
-                <dd class="govuk-summary-list__value">
-                {{dob}}
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                Customer Reference Number
-                </dt>
-                <dd class="govuk-summary-list__value">
-                {{crn}}
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                Contact details
-                </dt>
-                <dd class="govuk-summary-list__value">
-                <p class="govuk-body">{{login}}</p>
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                <a class="govuk-link" href="/yourinfo/update-email">
-                    Change<span class="govuk-visually-hidden"> contact details</span>
-                </a>
-                </dd>
-            </div>
-            </dl>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            Date of birth
+            </dt>
+            <dd class="govuk-summary-list__value">
+            {{dob}}
+            </dd>
+            <dd class="govuk-summary-list__actions">
+            </dd>
         </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            Customer Reference Number
+            </dt>
+            <dd class="govuk-summary-list__value">
+            {{crn}}
+            </dd>
+            <dd class="govuk-summary-list__actions">
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            Contact details
+            </dt>
+            <dd class="govuk-summary-list__value">
+            <p class="govuk-body">{{login}}</p>
+            </dd>
+            <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="/yourinfo/update-email">
+                Change<span class="govuk-visually-hidden"> contact details</span>
+            </a>
+            </dd>
+        </div>
+        </dl>
     </div>
 </div>

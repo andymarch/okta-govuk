@@ -1,45 +1,17 @@
-<div class="grid-row">
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-xl">Your Information</h1>
-            <p class="govuk-body"></p>
-        </div>
-    </div>
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-third">
-        <div>
-            <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                ID Token
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <pre>{{jwt id_token}}</pre>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                Access Token
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <pre>{{jwt access_token}}</pre>
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                </dd>
-            </div>
-            {{#if refresh_token}}
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                Refresh Token
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <pre>{{refresh_token}}</pre>
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                </dd>
-            </div>
-            {{/if}}
-            </dl>
-        </div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-xl">Your Information</h1>
+        <p class="govuk-body">The following tokens are provided by the IDP for 
+            this application. These describe you as a user as well as the access
+             you have been granted.
+        </p>
+        <h2 class="govuk-heading-m">ID Token</h2>
+        <pre>{{jwt id_token}}</pre>
+        <h2 class="govuk-heading-m">Access Token</h2>
+        <pre>{{jwt access_token}}</pre>
+        {{#if refresh_token}}
+            <h2 class="govuk-heading-m">Refresh Token</h2>
+            <pre>{{refresh_token}}</pre>
+        {{/if}}
     </div>
 </div>

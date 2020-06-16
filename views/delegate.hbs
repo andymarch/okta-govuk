@@ -1,65 +1,55 @@
-<div class="grid-row">
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-xl">Delegate Authority</h1>
             <p class="govuk-body">Allow another individual to access elements of your account on your behalf.</p>
-        </div>
-    </div>
-    {{#ifCond user.canDelegate '==' 'True'}}
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-third">
-            <div>
-                <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                        Name
-                    </dt>
-                    <dt class="govuk-summary-list__key">
-                        Contact Address
-                    </dt>
-                    <dd class="govuk-summary-list__actions">
-                    </dd>
-                </div>
-                {{#each delegates}}
-                <div class="govuk-summary-list__row">
-                    <dd class="govuk-summary-list__value">
-                    <p class="govuk-body">{{this.firstName}} {{this.secondName}}</p>
-                    </dd>
-                    <dd class="govuk-summary-list__value">
-                    <p class="govuk-body">{{this.email}}</p>
-                    </dd>
-                    <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="/delegateAuthority/remove/{{this.id}}">
-                        Remove <span class="govuk-visually-hidden">delegate</span>
-                    </a>
-                    </dd>
-                </div>
-                {{/each}}
-                </dl>
+        {{#ifCond user.canDelegate '==' 'True'}}
+        <div>
+            <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">
+                    Name
+                </dt>
+                <dt class="govuk-summary-list__key">
+                    Contact Address
+                </dt>
+                <dd class="govuk-summary-list__actions">
+                </dd>
             </div>
+            {{#each delegates}}
+            <div class="govuk-summary-list__row">
+                <dd class="govuk-summary-list__value">
+                <p class="govuk-body">{{this.firstName}} {{this.secondName}}</p>
+                </dd>
+                <dd class="govuk-summary-list__value">
+                <p class="govuk-body">{{this.email}}</p>
+                </dd>
+                <dd class="govuk-summary-list__actions">
+                <a class="govuk-link" href="/delegateAuthority/remove/{{this.id}}">
+                    Remove <span class="govuk-visually-hidden">delegate</span>
+                </a>
+                </dd>
+            </div>
+            {{/each}}
+            </dl>
         </div>
-    </div>
-    <div class="govuk-grid-row">
-        <a class="govuk-link" href="/delegateAuthority/add">
-            Add delegate
-        </a>
-    </div>
-    <div class="govuk-grid-row">
-        <a class="govuk-link" href="/delegateAuthority/disable">
+        <p class="govuk-body">
+            <a class="govuk-link" href="/delegateAuthority/add">
+                Add delegate
+            </a>
+        </p>
+        <p class="govuk-body">
+            <a class="govuk-link" href="/delegateAuthority/disable">
             Remove all delegated access
-        </a>
-    </div>
-    {{else}}
-     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-third">
-            <p class="govuk-body">
-                Your account is not currently enabled for delegated access.
-                <form action="/delegateAuthority/enable">
-                    <button class="govuk-button" data-module="govuk-button">Enable delegated access</button>
-                </form>
-                
-            </p>
-        </div>
+            </a>
+        </p>
+        {{else}}
+        <p class="govuk-body">
+            Your account is not currently enabled for delegated access.
+            <form action="/delegateAuthority/enable">
+                <button class="govuk-button" data-module="govuk-button">Enable delegated access</button>
+            </form>
+            
+        </p>
     </div>
     {{/ifCond}}
 </div>
