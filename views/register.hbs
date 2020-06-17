@@ -1,0 +1,74 @@
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form action="/register" method="post">
+            <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                <h1 class="govuk-fieldset__heading">
+                Register New Account
+                </h1>
+            </legend>
+            <div class="govuk-form-group">
+
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="email">
+                            Your email address
+                        </label>
+                    <span id="email-hint" class="govuk-hint">
+                        The email address you want to associate with the account. We'll use this for account recovery and for additional verification if required.
+                    </span>
+                        <input class="govuk-input" id="email" name="email" type="email" aria-describedby="email-hint" autocomplete="email" spellcheck="false" value="{{email}}">
+                    </div>
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="password">
+                            Create a password
+                        </label>
+                        <span id="password-hint" class="govuk-hint">
+                            Used to authenticate you to the service.
+                        </span>
+                        <input class="govuk-input" id="password" name="password" type="password" aria-describedby="password-hint" autocomplete="password" spellcheck="false" value="{{password}}">
+                    </div>
+                    <div class="govuk-form-group">
+                                <label class="govuk-label" for="dob">
+                                    Your date of birth
+                                </label>
+                                <span id="dob-hint" class="govuk-hint">
+                                    Your date on which you were born. we'll use this for identity verification and password recovery.
+                                </span>
+                                <div class="govuk-date-input" id="dob">
+                                    <div class="govuk-date-input__item">
+                                        <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="dobday">
+                                            Day
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dobday" name="dobday" type="number" pattern="[0-9]*">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-date-input__item">
+                                        <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="dobmonth">
+                                            Month
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dobmonth" name="dobmonth" type="number" pattern="[0-9]*">
+                                        </div>
+                                    </div>
+                                    <div class="govuk-date-input__item">
+                                        <div class="govuk-form-group">
+                                        <label class="govuk-label govuk-date-input__label" for="dobyear">
+                                            Year
+                                        </label>
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="dobyear" name="dobyear" type="number" pattern="[0-9]*">
+                                        </div>
+                                    </div>
+                            </div>
+                    </div>
+
+                     <div class="govuk-form-group">
+                        <button class="govuk-button" >
+                        Continue
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

@@ -13,23 +13,29 @@ module.exports = function (_oidc){
   });
 
   router.post('/', async function(req, res, next) {
+    console.log(req.body)
     try{
       var username
-      if(!req.body.crn.includes('@')){
-        var response = await axios.get(process.env.TENANT_URL + 
-          '/api/v1/users?search=' +
-          encodeURI('profile.customer_reference_number eq "'+req.body.crn+'"'));
-          if(response.data.length > 1){
-            throw "Customer reference is not unique"
-          }
-          if(response.data.length == 0){
-            throw "Customer reference not found"
-          }
-          username = response.data[0].profile.login
+      if(req.body.crn){
+        if(!req.body.crn.includes('@')){
+          var response = await axios.get(process.env.TENANT_URL + 
+            '/api/v1/users?search=' +
+            encodeURI('profile.customer_reference_number eq "'+req.body.crn+'"'));
+            if(response.data.length > 1){
+              throw "Customer reference is not unique"
+            }
+            if(response.data.length == 0){
+              throw "Customer reference not found"
+            }
+            username = response.data[0].profile.login
+        }
+        else {
+          username = req.body.crn
+        }
+      } else{
+        username = req.body.email
       }
-      else {
-        username = req.body.crn
-      }
+
       var authNresponse = await axios.post(process.env.TENANT_URL + 
         '/api/v1/authn',{
             "username": username,

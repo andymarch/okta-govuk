@@ -7,7 +7,7 @@ module.exports = function (_oidc){
     oidc = _oidc;
 
   router.get('/', oidc.ensureAuthenticated(), function(req, res, next) {
-    res.render('portal',{layour: 'portal'});
+    res.render('portal');
   });
 
   return router;
