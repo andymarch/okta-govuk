@@ -7,15 +7,22 @@
                 Register New Account
                 </h1>
             </legend>
-            <div class="govuk-form-group">
-
+                    {{#if error }}
+                    <div class="govuk-form-group govuk-form-group--error">
+                    {{else}}
                     <div class="govuk-form-group">
+                    {{/if}}              
                         <label class="govuk-label" for="email">
                             Your email address
                         </label>
-                    <span id="email-hint" class="govuk-hint">
-                        The email address you want to associate with the account. We'll use this for account recovery and for additional verification if required.
-                    </span>
+                        <span id="email-hint" class="govuk-hint">
+                            The email address you want to associate with the account. We'll use this for account recovery and for additional verification if required.
+                        </span>
+                        {{#if error }}
+                        <span id="passport-issued-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> This email address is already registered, you can <a class="govuk-link" href="/login">login here</a>.
+                        </span>
+                        {{/if}}
                         <input class="govuk-input" id="email" name="email" type="email" aria-describedby="email-hint" autocomplete="email" spellcheck="false" value="{{email}}">
                     </div>
                     <div class="govuk-form-group">
@@ -40,7 +47,7 @@
                                         <label class="govuk-label govuk-date-input__label" for="dobday">
                                             Day
                                         </label>
-                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dobday" name="dobday" type="number" pattern="[0-9]*">
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dobday" name="dobday" type="number" pattern="[0-9]*" value="{{dobday}}">
                                         </div>
                                     </div>
                                     <div class="govuk-date-input__item">
@@ -48,7 +55,7 @@
                                         <label class="govuk-label govuk-date-input__label" for="dobmonth">
                                             Month
                                         </label>
-                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dobmonth" name="dobmonth" type="number" pattern="[0-9]*">
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dobmonth" name="dobmonth" type="number" pattern="[0-9]*" value="{{dobmonth}}">
                                         </div>
                                     </div>
                                     <div class="govuk-date-input__item">
@@ -56,7 +63,7 @@
                                         <label class="govuk-label govuk-date-input__label" for="dobyear">
                                             Year
                                         </label>
-                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="dobyear" name="dobyear" type="number" pattern="[0-9]*">
+                                        <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="dobyear" name="dobyear" type="number" pattern="[0-9]*" value="{{dobyear}}">
                                         </div>
                                     </div>
                             </div>

@@ -29,7 +29,7 @@ module.exports = function (_oidc){
       }
       dob = dob+'/'+req.body.dobyear
 
-      var customerNumber = generateCustomerNumber()
+      var customerNumber = await generateCustomerNumber()
 
       var payload = {
           profile: {
@@ -48,27 +48,34 @@ module.exports = function (_oidc){
         res.redirect(307, '/login');
     }
     catch(err){
-          console.log(err)
-          // set locals, only providing error in development
-          res.locals.message = err.message;
-          res.locals.error = req.app.get('env') === 'development' ? err : {};
+        if(err.response.data.errorSummary && err.response.data.errorSummary === 'Api validation failed: login'){
+            res.render('register',{email:req.body.email,dobday:req.body.dobday, dobmonth:req.body.dobmonth, dobyear:req.body.dobyear, error: "registered"})
+        }
+        else {
+            console.log(err)
+            // set locals, only providing error in development
+            res.locals.message = err.message;
+            res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-          // render the error page
-          res.status(err.status || 500);
-          res.render('error', { title: 'Error' });
-      }
+            // render the error page
+            res.status(err.status || 500);
+            res.render('error', { title: 'Error' });
+        }
+        }
    });
 
 
-   function generateCustomerNumber(){
+   async function generateCustomerNumber(){
        var customerNumber = Math.floor(Math.random() * 90000) + 10000;
        var response = await axios.get(process.env.TENANT_URL + 
         '/api/v1/users?search=' +
-        encodeURI('profile.customer_reference_number eq "'+req.body.customerNumber+'"'));
+        encodeURI('profile.customer_reference_number eq "'+customerNumber+'"'));
         if(response.data.length > 1){
-            return generateCustomerNumber()
+            console.log("collision for "+ customerNumber)
+            return await generateCustomerNumber()
         }
         if(response.data.length == 0){
+            console.log("no collision for " + customerNumber)
             return customerNumber
         } 
    }
