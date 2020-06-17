@@ -46,7 +46,6 @@ module.exports = function (_oidc){
         var register = await axios.post(process.env.TENANT_URL + 
             '/api/v1/users/',payload)
         res.redirect(307, '/login');
-        //res.render('registerComplete',{email: req.body.email, customerNumber: customerNumber});
     }
     catch(err){
           console.log(err)
