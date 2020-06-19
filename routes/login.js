@@ -13,7 +13,6 @@ module.exports = function (_oidc){
   });
 
   router.post('/', async function(req, res, next) {
-    console.log(req.body)
     try{
       var username
       if(req.body.crn){

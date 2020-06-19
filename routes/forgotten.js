@@ -32,7 +32,6 @@ module.exports = function (_oidc){
           }
           username = response.data[0].profile.login
           profile = response.data[0]
-          console.log(profile)
       }
       else {
         username = req.body.crn
@@ -62,10 +61,8 @@ module.exports = function (_oidc){
       dob = dob+'/'+req.body.dobyear
 
       if(profile.profile.date_of_birth === dob){
-          console.log(profile)
         var expire = await axios.post(process.env.TENANT_URL + 
             '/api/v1/users/'+profile.id+'/lifecycle/expire_password?tempPassword=true')
-            console.log(expire)
         res.render('forgotten-success',{temp: expire.data.tempPassword})
       }
       else{

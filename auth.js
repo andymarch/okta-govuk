@@ -25,7 +25,6 @@ class Auth {
                 });      
             }
             else{
-                console.log("no context")
                 res.redirect("/login")
             }
         }
