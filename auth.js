@@ -3,6 +3,8 @@ const qs = require('querystring')
 var base64 = require('base-64');
 const OktaJwtVerifier = require('@okta/jwt-verifier');
 const uuidv1 = require('uuid/v1');
+const { access } = require('fs');
+const e = require('express');
 
 const oktaJwtVerifier = new OktaJwtVerifier({
     issuer: process.env.ISSUER,
@@ -59,7 +61,8 @@ class Auth {
                     'family_name' : idtoken.name,
                     'givenName': idtoken.name,
                     'preferred_username': idtoken.preferred_username,
-                    'canDelegate': accesstoken.can_delegate
+                    'canDelegate': accesstoken.can_delegate,
+                    'loa': accesstoken.LOA
                 },
                 'tokens': {
                     'access_token': req.session.user.access_token,
@@ -175,7 +178,12 @@ class Auth {
                             'access_token': tokenresponse.data.access_token
                         }
                     }
-                    res.redirect("/portal")
+                    if(req.session.destination){
+                        res.redirect(req.session.destination)
+                        req.session.destination = undefined
+                    } else {
+                        res.redirect("/portal")
+                    }
             }
             catch(err){
                 console.log(err)

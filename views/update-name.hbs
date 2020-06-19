@@ -1,0 +1,41 @@
+<div class="govuk-grid-row">
+    <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form action="/yourinfo/update-name" method="post">
+            <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                <h1 class="govuk-fieldset__heading">
+                Update your name
+                </h1>
+            </legend>
+            <div class="govuk-form-group">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="givenNames">
+                            Given names
+                        </label>
+                        <span id="given-names-hint" class="govuk-hint">
+                            Your names as written on official documents such as a passport or driving licence.
+                        </span>
+                        <input class="govuk-input" id="givenNames" name="givenNames" type="text" aria-describedby="given-names-hint" autocomplete="given-name" spellcheck="false" value="{{givenNames}}">
+                    </div>
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="familyName">
+                            Family name
+                        </label>
+                        <span id="family-names-hint" class="govuk-hint">
+                            You can use this as an identifier to login and we may send
+                            information to this address
+                        </span>
+                        <input class="govuk-input" id="familyName" name="familyName" type="text" aria-describedby="family-names-hint" autocomplete="family-name" spellcheck="false" value="{{familyName}}">
+                    </div>
+                     <div class="govuk-form-group">
+                        <button class="govuk-button" >
+                        Continue
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    </div> 
+</div>
