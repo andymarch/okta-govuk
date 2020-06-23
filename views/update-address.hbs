@@ -1,0 +1,50 @@
+<div class="govuk-grid-row">
+    <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form action="/yourinfo/update-address" method="post">
+                <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-fieldset__heading">
+                    Update your address
+                    </h1>
+                </legend>
+                <div class="govuk-form-group">
+                <label class="govuk-label" for="addressLine1">
+                    Building and street <span class="govuk-visually-hidden">line 1 of 2</span>
+                </label>
+                <input class="govuk-input" id="addressLine1" name="addressLine1" type="text" autocomplete="address-line1" value="{{address.line1}}">
+                </div>
+                <div class="govuk-form-group">
+                <label class="govuk-label" for="addressLine2">
+                    <span class="govuk-visually-hidden">Building and street line 2 of 2</span>
+                </label>
+                <input class="govuk-input" id="addressLine2" name="addressLine2" type="text" autocomplete="address-line2" value="{{address.line2}}">
+                </div>
+                <div class="govuk-form-group">
+                <label class="govuk-label" for="addressTown">
+                    Town or city
+                </label>
+                <input class="govuk-input govuk-!-width-two-thirds" id="addressTown" name="addressTown" type="text" autocomplete="address-level2" value="{{address.city}}">
+                </div>
+                <div class="govuk-form-group">
+                <label class="govuk-label" for="address-county">
+                    County
+                </label>
+                <input class="govuk-input govuk-!-width-two-thirds" id="addressCunty" name="addressCounty" type="text" value="{{address.county}}">
+                </div>
+                <div class="govuk-form-group">
+                <label class="govuk-label" for="address-postcode">
+                    Postcode
+                </label>
+                <input class="govuk-input govuk-input--width-10" id="addressPostcode" name="addressPostcode" type="text" autocomplete="postal-code" value="{{address.postcode}}">
+                </div>
+                </fieldset>
+                <div class="govuk-form-group">
+                    <button class="govuk-button" >
+                    Continue
+                    </button>
+                </div>
+        </form>
+    </div>
+    </div> 
+</div>
