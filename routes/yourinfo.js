@@ -173,16 +173,13 @@ module.exports = function (_oidc){
 
   router.post('/update-name',oidc.ensureAuthenticated(),async function(req,res,next){
     try{
-      var loa = req.userContext.userinfo.loa
-      if(loa == "LOA0"){
-        loa = "LOA1"
-      }
+      //loa should always be reset to 1 as self asserted
       var update = await axios.post(process.env.TENANT_URL + 
           '/api/v1/users/'+req.userContext.userinfo.sub,{
               "profile":{
                   "firstName":req.body.givenNames,
                   "lastName":req.body.familyName,
-                  "LOA": loa
+                  "LOA": "LOA1"
               }
           })
       req.session.destination = '/yourinfo'
@@ -219,7 +216,8 @@ module.exports = function (_oidc){
       var update = await axios.post(process.env.TENANT_URL + 
           '/api/v1/users/'+req.userContext.userinfo.sub,{
               "profile":{
-                  "postalAddress":addressModel.forStorage()
+                  "postalAddress":addressModel.forStorage(),
+                  "LOA": "LOA1"
               }
           })
       req.session.destination = '/yourinfo'
