@@ -1,0 +1,31 @@
+<div class="govuk-grid-row">
+    <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <form action="/tickets/{{id}}/comment" method="post">
+            <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--xl">
+                <h1 class="govuk-fieldset__heading">
+                Update Ticket
+                </h1>
+            </legend>
+            <div class="govuk-form-group">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="comment">
+                            Comment
+                        </label>
+                        <span id="comment-hint" class="govuk-hint">
+                            Describe the issue and its current status.
+                        </span>
+                        <input class="govuk-input" id="comment" name="comment" aria-describedby="comment-hint" autocomplete="comment" spellcheck="false" value="{{comment}}">
+                    </div>
+                     <div class="govuk-form-group">
+                        <button class="govuk-button" >
+                        Continue
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    </div> 
+</div>

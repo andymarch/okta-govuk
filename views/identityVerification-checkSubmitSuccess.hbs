@@ -1,0 +1,53 @@
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <div class="govuk-panel govuk-panel--confirmation">
+        <h1 class="govuk-panel__title">
+            Identity Verification Completed
+        </h1>
+        <div class="govuk-panel__body">
+            <p>Your request for identity verification was proccesed.</p>
+            <p>The result was:<br/><strong>{{check.result}}</strong></p>
+        </div>
+        </div>
+
+        {{#each reports}}
+            {{#ifCond this.name '==' 'identity_enhanced'}}
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                    Mortality
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                    {{this.breakdown.mortality.result}}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                    Date of Birth
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                    {{this.breakdown.dateOfBirth.result}}
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">
+                    Address
+                    </dt>
+                    <dd class="govuk-summary-list__value">
+                    {{this.breakdown.address.result}}
+                    </dd>
+                </div>
+            </dl>
+            {{/ifCond}}
+        {{/each}}
+        <h2 class="govuk-heading-m">What happens next</h2>
+        <p class="govuk-body">
+            Your account has been updated to reflect the verification of your account. 
+            To update the value in your token we need to reauthorize you. 
+            We'll do that while redirecting you to the portal.
+        </p>
+        <p class="govuk-body">
+        <a href="/reauth" class="govuk-link">click here to return to the portal</a>
+      </p>
+    </div>
+</div>

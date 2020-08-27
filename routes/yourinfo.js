@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const AddressModel = require('../models/addressmodel');
 
 module.exports = function (_oidc){
     oidc = _oidc;
@@ -15,7 +16,8 @@ module.exports = function (_oidc){
             name:response.data.profile.firstName+" "+response.data.profile.lastName,
             dob:response.data.profile.date_of_birth,
             login:response.data.profile.login,
-            crn:response.data.profile.customer_reference_number
+            crn:response.data.profile.customer_reference_number,
+            address: new AddressModel(response.data.profile.postalAddress).forDisplay()
         });
       }
       catch(err){
@@ -163,7 +165,7 @@ module.exports = function (_oidc){
       }
    });
 
-   router.get('/update-name',oidc.ensureAuthenticated(),async function(req,res,next){
+  router.get('/update-name',oidc.ensureAuthenticated(),async function(req,res,next){
     var response = await axios.get(process.env.TENANT_URL + 
         '/api/v1/users/'+req.userContext.userinfo.sub)
       res.render('update-name',{givenNames:response.data.profile.firstName,familyName: response.data.profile.lastName})
@@ -171,16 +173,13 @@ module.exports = function (_oidc){
 
   router.post('/update-name',oidc.ensureAuthenticated(),async function(req,res,next){
     try{
-      var loa = req.userContext.userinfo.loa
-      if(loa == "LOA0"){
-        loa == "LOA1"
-      }
+      //loa should always be reset to 1 as self asserted
       var update = await axios.post(process.env.TENANT_URL + 
           '/api/v1/users/'+req.userContext.userinfo.sub,{
               "profile":{
                   "firstName":req.body.givenNames,
                   "lastName":req.body.familyName,
-                  "LOA": loa
+                  "LOA": "LOA1"
               }
           })
       req.session.destination = '/yourinfo'
@@ -195,7 +194,47 @@ module.exports = function (_oidc){
           res.status(err.status || 500);
           res.render('error', { title: 'Error' });
       }
-})
+  })
+
+  router.get('/update-address',oidc.ensureAuthenticated(),async function(req,res,next){
+    var response = await axios.get(process.env.TENANT_URL + 
+        '/api/v1/users/'+req.userContext.userinfo.sub)
+        var addressModel = new AddressModel(response.data.profile.postalAddress)
+      res.render('update-address',{address:addressModel})
+  });
+
+  router.post('/update-address',oidc.ensureAuthenticated(),async function(req,res,next){
+    try{
+      var addressModel = new AddressModel()
+      addressModel.line1 = req.body.addressLine1
+      addressModel.line2 = req.body.addressLine2
+      addressModel.city = req.body.addressTown
+      addressModel.county = req.body.addressCounty
+      addressModel.postcode = req.body.addressPostcode
+      //this value is fixed
+      addressModel.country = "GBR"
+      var update = await axios.post(process.env.TENANT_URL + 
+          '/api/v1/users/'+req.userContext.userinfo.sub,{
+              "profile":{
+                  "postalAddress":addressModel.forStorage(),
+                  "LOA": "LOA1"
+              }
+          })
+      req.session.destination = '/yourinfo'
+      res.redirect('/reauth')
+    } catch(err){
+          console.log(err)
+          // set locals, only providing error in development
+          res.locals.message = err.message;
+          res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+          // render the error page
+          res.status(err.status || 500);
+          res.render('error', { title: 'Error' });
+      }
+  })
+
+
 
    return router;
 }
