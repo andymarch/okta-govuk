@@ -116,6 +116,7 @@ var delegateAuthorityRouter = require('./routes/delegate')(auth)
 var authorityRouter = require('./routes/authority')(auth)
 var tokenRouter = require('./routes/tokens')(auth)
 var identityVerificationRouter = require('./routes/identityVerification')(auth)
+var ticketRouter = require('./routes/tickets')(auth)
 app.use('/', indexRouter)
 app.use('/login', loginRouter)
 app.use('/register',registerRouter)
@@ -128,6 +129,7 @@ app.use('/delegateAuthority',delegateAuthorityRouter)
 app.use('/authority',authorityRouter)
 app.use('/yourtokens',tokenRouter)
 app.use('/identityVerification', identityVerificationRouter)
+app.use('/tickets',ticketRouter)
   
 app.use(function(req, res, next) {
     next(createError(404));

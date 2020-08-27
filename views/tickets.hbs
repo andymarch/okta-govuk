@@ -1,0 +1,36 @@
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Your Tickets</h1>
+        <p class="govuk-body"></p>
+    <div>
+        <dl class="govuk-summary-list">
+        {{#each tickets}}
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            {{this.id}}
+            </dt>
+            <dd class="govuk-summary-list__value">
+            {{this.comments}}
+            </dd>
+            <dd class="govuk-summary-list__actions">
+                <a class="govuk-link" href="/tickets/{{this.id}}/comment">
+                    Comment<span class="govuk-visually-hidden"> on ticket</span>
+                </a>
+            </dd>
+        </div>
+        {{/each}}
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+            
+            </dt>
+            <dd class="govuk-summary-list__value">
+            </dd>
+            <dd class="govuk-summary-list__actions">
+                <a class="govuk-link" href="/tickets/new">
+                    Create<span class="govuk-visually-hidden"> new</span>
+                </a>
+            </dd>
+        </div>
+        </dl>
+    </div>
+</div>
