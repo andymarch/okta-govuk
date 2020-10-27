@@ -1,36 +1,40 @@
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-xl">Your Tickets</h1>
-        <p class="govuk-body"></p>
-    <div>
-        <dl class="govuk-summary-list">
+    <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-xl">Manage Tickets</h1>
+        <p class="govuk-body">
+            Here your can create and comment on issue tickets that have been raised for your account.
+        </p>
+        {{#if tickets}}
+        <h1 class="govuk-heading-m">Your tickets</h1>
         {{#each tickets}}
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-            {{this.id}}
-            </dt>
-            <dd class="govuk-summary-list__value">
-            {{this.comments}}
-            </dd>
-            <dd class="govuk-summary-list__actions">
-                <a class="govuk-link" href="/tickets/{{this.id}}/comment">
-                    Comment<span class="govuk-visually-hidden"> on ticket</span>
-                </a>
-            </dd>
-        </div>
-        {{/each}}
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-            
-            </dt>
-            <dd class="govuk-summary-list__value">
-            </dd>
-            <dd class="govuk-summary-list__actions">
-                <a class="govuk-link" href="/tickets/new">
-                    Create<span class="govuk-visually-hidden"> new</span>
-                </a>
-            </dd>
-        </div>
+        <h3 class="govuk-heading-s">Issue: {{this.id}}</h3>
+        <dl class="govuk-summary-list">
+            {{#each comments}}         
+            <div class="govuk-summary-list__row">
+                <dd class="govuk-summary-list__value">
+                {{this}}
+                </dd>
+            </div>   
+            {{/each}}
+            <div class="govuk-summary-list__row">
+                <dd class="govuk-summary-list__actions">
+                    <a class="govuk-link" href="/tickets/{{this.id}}/comment">
+                        Add Comment<span class="govuk-visually-hidden"> on ticket</span>
+                </dd>
+            </div>
         </dl>
-    </div>
+    
+        </a>
+        {{/each}}
+        {{/if}}
+
+        <h1 class="govuk-heading-m">Create a new ticket</h1>
+        <p class="govuk-body">Create a new ticket to discuss an issue.</p>
+        <a href="/tickets/new" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
+        Start now
+        <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" role="presentation" focusable="false">
+            <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+        </svg>
+        </a>
+</div>
 </div>
