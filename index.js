@@ -149,7 +149,7 @@ app.use(function(err, req, res, next) {
 axios.interceptors.request.use(request => {
     //use this rather than defaul so we only send our API key to the tenant
     if(request.url.startsWith(process.env.TENANT_URL+'/api')){
-        request.headers.Authorization = 'SSWS' +process.env.API_TOKEN
+        request.headers.Authorization = 'SSWS ' +process.env.API_TOKEN
     }
     // Edit request config
     return request;
