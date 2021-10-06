@@ -5,8 +5,8 @@ var oidc = require('@okta/oidc-middleware');
 const { Onfido, Region } = require("@onfido/api");
 const AddressModel = require('../models/addressmodel');
 const multer = require('multer')
+const Readable = require('stream');
 const fs = require('fs');
-
 
 var storage = multer.memoryStorage();
 var upload = multer({ storage : storage })
@@ -31,15 +31,17 @@ const onfido = new Onfido({
   })
 
   router.post('/loa1/gather', oidc.ensureAuthenticated(), upload.single('document'), async function(req,res,next){
+    //disabled until in memory transfer is working with onfido
+    //as this demo is hosted on heroku we cannot leverage the filesystem to
+    //upload
+    /*
     const file = req.file
     if (!file) {
       const error = new Error('Please upload a file')
       error.httpStatusCode = 400
       return next(error)
     }
-
-    console.log(file)
-
+    */
 
     try{
         var response = await axios.get(process.env.TENANT_URL + 
@@ -91,6 +93,15 @@ const onfido = new Onfido({
               });
         }
 
+        //this would convert the uploaded file to a stream for onfido but looks
+        //like a fs readstream is needed
+        /*const readStream = new Readable({
+            read() {
+              this.push(file.buffer);
+              this.push(null);
+            }
+        });*/
+
         await onfido.document.upload({
             applicantId: applicantId,
             file: fs.createReadStream("static/images/sample_driving_licence.png"),
@@ -118,9 +129,10 @@ const onfido = new Onfido({
         for (let index = 0; index < newCheck.reportIds.length; index++) {
             const element = newCheck.reportIds[index];
             var report = await onfido.report.find(element)
+            console.log(JSON.stringify(report))
             reports.push(report)
         }
-
+        req.session.destination = '/portal'
         res.render('identityVerification-checkSubmitSuccess',{check: newCheck,reports:reports})
        } catch(err){
             console.log(err)

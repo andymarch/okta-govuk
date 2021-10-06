@@ -6,12 +6,41 @@
             <ul class="govuk-list govuk-list--bullet">
                 <li>Driving License</li>
                 <li>Passport</li>
-                <li>EU Citizen Identity Card</li>
             </ul>
 
-            <form method="POST" action="/identityVerification/loa1/gather" enctype='multipart/form-data'>
-                <input type="file" name="document" accept="image/*" />
-                <input type="submit" value="Upload document"/>
+            <form class="govuk-form-group" method="POST" action="/identityVerification/loa1/gather" enctype='multipart/form-data'>
+                <div class="govuk-form-group">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                    <h1 class="govuk-fieldset__heading">
+                        Provide your document
+                    </h1>
+                    </legend>
+                    <label class="govuk-label" for="file-upload-1">
+                        Upload a file
+                    </label>
+                    <div class="govuk-warning-text">
+                        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                        <strong class="govuk-warning-text__text">
+                            <span class="govuk-warning-text__assistive">Warning</span>
+                            For demonstration purposes this sample driving license will be used.
+                            <a href="/static/images/sample_driving_licence.png"><img src="/static/images/sample_driving_licence.png" style="width: 50%";/></a>
+                        </strong>
+                    </div>
+                    <input disabled class="govuk-file-upload" id="file-upload-1" value="static/images/sample_driving_licence.png" type="file" name="document" accept="image/*" />
+                </div> 
+                <div class="govuk-form-group">
+                <label class="govuk-label" for="documentType">
+                    Document Type
+                </label>
+                <select class="govuk-select" id="documentType" name="sort">
+                    <option value="driving_licence" selected>Driving Licence</option>
+                    <option value="passport">Passport</option>
+                </select>
+                </div>   
+                <div>
+                    <input class="govuk-button" type="submit" value="Continue"/>
+                </div>
+                
             </form>
     </div>
 </div>
