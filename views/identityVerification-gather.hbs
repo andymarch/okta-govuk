@@ -1,0 +1,17 @@
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Identity Verification</h1>
+
+            <p class="govuk-body">To support the verification of your identity please upload an image of one of the following documents in your name.</p>   
+            <ul class="govuk-list govuk-list--bullet">
+                <li>Driving License</li>
+                <li>Passport</li>
+                <li>EU Citizen Identity Card</li>
+            </ul>
+
+            <form method="POST" action="/identityVerification/loa1/gather" enctype='multipart/form-data'>
+                <input type="file" name="document" accept="image/*" />
+                <input type="submit" value="Upload document"/>
+            </form>
+    </div>
+</div>

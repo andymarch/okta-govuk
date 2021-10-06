@@ -61,7 +61,8 @@ class Auth {
                     'givenName': idtoken.name,
                     'preferred_username': idtoken.preferred_username,
                     'canDelegate': accesstoken.can_delegate,
-                    'loa': accesstoken.LOA
+                    'loa': accesstoken.LOA,
+                    'on_behalf': accesstoken.on_behalf
                 },
                 'tokens': {
                     'access_token': req.session.user.access_token,

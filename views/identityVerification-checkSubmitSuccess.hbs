@@ -12,6 +12,7 @@
 
         {{#each reports}}
             {{#ifCond this.name '==' 'identity_enhanced'}}
+            <h2 class="govuk-heading-l">Identity Report</h2>
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">
@@ -38,6 +39,43 @@
                     </dd>
                 </div>
             </dl>
+            {{/ifCond}}
+            {{#ifCond this.name '==' 'document'}}
+                <h2 class="govuk-heading-l">Document Report</h2>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                        Original Document Present
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                        {{this.breakdown.visualAuthenticity.breakdown.originalDocumentPresent.result}}
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                        Digital Tampering
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                        {{this.breakdown.visualAuthenticity.breakdown.digitalTampering.result}}
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                        Compromised Document
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                        {{this.breakdown.compromisedDocument.result}}
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">
+                        Document Expiration
+                        </dt>
+                        <dd class="govuk-summary-list__value">
+                        {{this.breakdown.dataValidation.breakdown.documentExpiration.result}}
+                        </dd>
+                    </div>
+                </dl>
             {{/ifCond}}
         {{/each}}
         <h2 class="govuk-heading-m">What happens next</h2>

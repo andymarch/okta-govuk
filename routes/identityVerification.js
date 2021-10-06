@@ -4,6 +4,12 @@ const axios = require('axios');
 var oidc = require('@okta/oidc-middleware');
 const { Onfido, Region } = require("@onfido/api");
 const AddressModel = require('../models/addressmodel');
+const multer = require('multer')
+const fs = require('fs');
+
+
+var storage = multer.memoryStorage();
+var upload = multer({ storage : storage })
 
 module.exports = function (_oidc){
     oidc = _oidc;
@@ -21,6 +27,20 @@ const onfido = new Onfido({
   });
 
   router.get('/loa1/gather', oidc.ensureAuthenticated(), async function(req,res,next){
+    res.render('identityVerification-gather',{layout: 'subpage'});
+  })
+
+  router.post('/loa1/gather', oidc.ensureAuthenticated(), upload.single('document'), async function(req,res,next){
+    const file = req.file
+    if (!file) {
+      const error = new Error('Please upload a file')
+      error.httpStatusCode = 400
+      return next(error)
+    }
+
+    console.log(file)
+
+
     try{
         var response = await axios.get(process.env.TENANT_URL + 
             '/api/v1/users/'+req.userContext.userinfo.sub)
@@ -28,8 +48,6 @@ const onfido = new Onfido({
         var address = new AddressModel(response.data.profile.postalAddress)
         
         var applicantId = response.data.profile.verificationID
-
-
 
         if(applicantId == null || applicantId.length == 0){
             //need to create the applicant
@@ -73,10 +91,16 @@ const onfido = new Onfido({
               });
         }
 
+        await onfido.document.upload({
+            applicantId: applicantId,
+            file: fs.createReadStream("static/images/sample_driving_licence.png"),
+            type: "driving_licence"
+          })
+
         //create a new check for this user
         const newCheck = await onfido.check.create({
             applicantId,
-            reportNames: ["identity_enhanced"],
+            reportNames: ["identity_enhanced","document"],
             //this is slow but means we can just dump the result, don't do this for a
             //real system use a call back
             asynchronous: false
