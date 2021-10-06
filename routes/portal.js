@@ -7,7 +7,7 @@ module.exports = function (_oidc){
     oidc = _oidc;
 
   router.get('/', oidc.ensureAuthenticated(), function(req, res, next) {
-    res.render('portal');
+    res.render('portal', {on_Behalf: req.userContext.on_Behalf, canDelegate: req.userContext.canDelegate});
   });
 
   return router;

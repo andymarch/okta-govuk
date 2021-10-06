@@ -42,6 +42,7 @@
             <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
         </svg>
         </a>
+        {{#if canDelegate}}
         <h1 class="govuk-heading-m">Manage delegated authority</h1>
         <p class="govuk-body">Grant agents authority to act on your behalf.</p>
         <a href="/delegateAuthority" role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
@@ -50,6 +51,7 @@
             <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
         </svg>
         </a>
+        {{/if}}
         <h1 class="govuk-heading-m">Exercise delegated authority</h1>
         <p class="govuk-body">Restablish this session with the context of an
         entity which has granted authority.</p>
