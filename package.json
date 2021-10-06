@@ -15,7 +15,7 @@
     "@okta/oidc-middleware": "^2.1.0",
     "@onfido/api": "^1.1.0",
     "atob": "^2.1.2",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "base-64": "^0.1.0",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.2.0",
