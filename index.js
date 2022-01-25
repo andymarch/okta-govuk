@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const sassMiddleware = require('node-sass-middleware')
+const sassMiddleware = require('@gompa/node-sass-middleware')
 const express = require('express')
 const hbs  = require('express-handlebars')
 const session = require('express-session')
