@@ -25,6 +25,7 @@
     "express-session": "^1.17.0",
     "govuk-frontend": "^3.4.0",
     "http-errors": "^1.7.3",
+    "mixpanel": "^0.14.0",
     "multer": "^1.4.3",
     "nodemon": "^2.0.1",
     "nunjucks": "^3.2.0",

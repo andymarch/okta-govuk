@@ -4,6 +4,7 @@ const axios = require('axios');
 var oidc = require('@okta/oidc-middleware');
 const uuidv1 = require('uuid/v1');
 const passwordTester = require('../PwnedPasswordTester')
+const analytics = require('../analytics')
 
 module.exports = function (_oidc){
     oidc = _oidc;
@@ -68,6 +69,8 @@ module.exports = function (_oidc){
       }
 
       if(authNresponse.data.status == "SUCCESS"){
+        analytics.trackUser(authNresponse.data._embedded.user.profile)
+        analytics.trackEvent(authNresponse.data._embedded.user.profile.login,"Login")
         req.session.state = uuidv1();
         res.redirect(process.env.ISSUER + 
           '/v1/authorize?' +
@@ -168,6 +171,8 @@ module.exports = function (_oidc){
         'X-Forwarded-For': req.headers['x-forwarded-for'] || req.connection.remoteAddress
       })
     if(factorChallenge.data.status === 'SUCCESS'){
+      analytics.trackUser(factorChallenge.data._embedded.user.profile)
+      analytics.trackEvent(factorChallenge.data._embedded.user.profile.login,"Login")
       req.session.state = uuidv1();
       res.redirect(process.env.ISSUER + 
         '/v1/authorize?' +

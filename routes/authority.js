@@ -3,12 +3,14 @@ const router = express.Router();
 const axios = require('axios');
 var oidc = require('@okta/oidc-middleware');
 const qs = require('querystring')
+const analytics = require('../analytics')
 
 
 module.exports = function (_oidc){
     oidc = _oidc;
   
   router.get('/',oidc.ensureAuthenticated(),async function(req, res, next) {
+    analytics.trackEvent(req.userContext.userinfo.sub,"List delegated authority")
     try{
      var resp = await axios.get(process.env.SERVICE_URL + '/agent',{headers:{Authorization: "Bearer "+req.session.user.access_token}})
       res.render('authority',{layout: 'subpage', entities: resp.data});
@@ -26,7 +28,7 @@ module.exports = function (_oidc){
   });
 
   router.post('/',oidc.ensureAuthenticated(),async function(req, res, next) {
-
+    analytics.trackEvent(req.userContext.userinfo.sub,"Exercise delegated authority")
       try{
           var response = await axios.post(process.env.SERVICE_URL + '/agent',
           {

@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const AddressModel = require('../models/addressmodel');
+const analytics = require('../analytics')
 
 module.exports = function (_oidc){
     oidc = _oidc;
   
   router.get('/', oidc.ensureAuthenticated(), async function(req, res, next) {
+    analytics.trackEvent(req.userContext.userinfo.sub,"Get tickets")
       try{      
         var response = await axios.get(process.env.TICKET_SERVICE_URL+"tickets",{ headers: { Authorization: "Bearer " + req.session.user.access_token } })
         res.render('tickets',
@@ -32,6 +33,7 @@ module.exports = function (_oidc){
   });
 
   router.post('/new',oidc.ensureAuthenticated(),async function(req,res,next){
+    analytics.trackEvent(req.userContext.userinfo.sub,"Create ticket")
     try{
       await axios.post(process.env.TICKET_SERVICE_URL+"tickets",
       { comment: req.body.comment },
@@ -50,11 +52,11 @@ module.exports = function (_oidc){
   });
 
   router.get('/:id/comment',oidc.ensureAuthenticated(), async function(req,res,next){
-    console.log("value is " +req.params.id)
     res.render('tickets-update',{id:req.params.id})
   })
 
   router.post('/:id/comment',oidc.ensureAuthenticated(), async function(req,res,next){
+    analytics.trackEvent(req.userContext.userinfo.sub,"Add comment")
     try{
       await axios.post(process.env.TICKET_SERVICE_URL+"tickets/"+req.params.id,
       { comment: req.body.comment },

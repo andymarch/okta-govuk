@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 var oidc = require('@okta/oidc-middleware');
+const analytics = require('../analytics')
 
 module.exports = function (_oidc){
     oidc = _oidc;
 
   router.get('/', oidc.ensureAuthenticated(), async function(req, res, next) {
+    analytics.trackEvent(req.userContext.userinfo.sub,"Display delegated agents")
     try{      
         if(req.userContext.userinfo.canDelegate == "True"){
           var response = await axios.get(
@@ -35,6 +37,7 @@ module.exports = function (_oidc){
   })
 
   router.post('/add', oidc.ensureAuthenticated(), async function(req,res,next){
+    analytics.trackEvent(req.userContext.userinfo.sub,"Add delegated agent")
     try{
       await axios.post(
         process.env.SERVICE_URL + '/delegator/agents/add',
@@ -54,6 +57,7 @@ module.exports = function (_oidc){
   })
 
   router.get('/remove/:id', oidc.ensureAuthenticated(), async function(req, res, next) {
+    analytics.trackEvent(req.userContext.userinfo.sub,"Remove delegated agents")
     try {
       await axios.post(
         process.env.SERVICE_URL + '/delegator/agents/remove',
@@ -73,6 +77,7 @@ module.exports = function (_oidc){
   })
 
   router.get('/enable', oidc.ensureAuthenticated(),async function (req,res,next){
+    analytics.trackEvent(req.userContext.userinfo.sub,"Enable account delegation")
     try {
       await axios.post(
         process.env.SERVICE_URL + '/delegator/delegation',
@@ -92,6 +97,7 @@ module.exports = function (_oidc){
   })
 
   router.get('/disable', oidc.ensureAuthenticated(),async function (req,res,next){
+    analytics.trackEvent(req.userContext.userinfo.sub,"Disable account delegation")
     try {
       await axios.post(
         process.env.SERVICE_URL + '/delegator/delegation',

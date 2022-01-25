@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const AddressModel = require('../models/addressmodel');
+const analytics = require('../analytics')
 
 module.exports = function (_oidc){
     oidc = _oidc;
   
   router.get('/', oidc.ensureAuthenticated(), async function(req, res, next) {
+      analytics.trackEvent(req.userContext.userinfo.sub,"Show user info")
       try{      
         var response = await axios.get(process.env.TENANT_URL + 
             '/api/v1/users/'+req.userContext.userinfo.sub)
@@ -54,6 +56,7 @@ module.exports = function (_oidc){
   });
 
   router.post('/update-email/verify-password',oidc.ensureAuthenticated(), async function(req,res,next){
+    analytics.trackEvent(req.userContext.userinfo.sub,"Update email")
     try{
         var response = await axios.get(process.env.TENANT_URL + 
             '/api/v1/users/'+req.userContext.userinfo.sub)
@@ -172,6 +175,7 @@ module.exports = function (_oidc){
   });
 
   router.post('/update-name',oidc.ensureAuthenticated(),async function(req,res,next){
+    analytics.trackEvent(req.userContext.userinfo.sub,"Update name")
     try{
       //loa should always be reset to 1 as self asserted
       var update = await axios.post(process.env.TENANT_URL + 
@@ -204,6 +208,7 @@ module.exports = function (_oidc){
   });
 
   router.post('/update-address',oidc.ensureAuthenticated(),async function(req,res,next){
+    analytics.trackEvent(req.userContext.userinfo.sub,"Update address")
     try{
       var addressModel = new AddressModel()
       addressModel.line1 = req.body.addressLine1
