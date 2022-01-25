@@ -10,7 +10,7 @@ module.exports = function (_oidc){
     oidc = _oidc;
   
   router.get('/',oidc.ensureAuthenticated(),async function(req, res, next) {
-    analytics.trackEvent(req.userContext.userinfo.sub,"List delegated authority")
+    analytics.trackEvent(req.userContext.userinfo.preferred_username,"List delegated authority")
     try{
      var resp = await axios.get(process.env.SERVICE_URL + '/agent',{headers:{Authorization: "Bearer "+req.session.user.access_token}})
       res.render('authority',{layout: 'subpage', entities: resp.data});

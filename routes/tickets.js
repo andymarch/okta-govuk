@@ -7,7 +7,7 @@ module.exports = function (_oidc){
     oidc = _oidc;
   
   router.get('/', oidc.ensureAuthenticated(), async function(req, res, next) {
-    analytics.trackEvent(req.userContext.userinfo.sub,"Get tickets")
+    analytics.trackEvent(req.userContext.userinfo.preferred_username,"Get tickets")
       try{      
         var response = await axios.get(process.env.TICKET_SERVICE_URL+"tickets",{ headers: { Authorization: "Bearer " + req.session.user.access_token } })
         res.render('tickets',
@@ -33,7 +33,7 @@ module.exports = function (_oidc){
   });
 
   router.post('/new',oidc.ensureAuthenticated(),async function(req,res,next){
-    analytics.trackEvent(req.userContext.userinfo.sub,"Create ticket")
+    analytics.trackEvent(req.userContext.userinfo.preferred_username,"Create ticket")
     try{
       await axios.post(process.env.TICKET_SERVICE_URL+"tickets",
       { comment: req.body.comment },
@@ -56,7 +56,7 @@ module.exports = function (_oidc){
   })
 
   router.post('/:id/comment',oidc.ensureAuthenticated(), async function(req,res,next){
-    analytics.trackEvent(req.userContext.userinfo.sub,"Add comment")
+    analytics.trackEvent(req.userContext.userinfo.preferred_username,"Add comment")
     try{
       await axios.post(process.env.TICKET_SERVICE_URL+"tickets/"+req.params.id,
       { comment: req.body.comment },

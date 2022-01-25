@@ -22,7 +22,7 @@ const onfido = new Onfido({
     });
 
   router.get('/', oidc.ensureAuthenticated(), async function(req, res, next) {
-    analytics.trackEvent(req.userContext.userinfo.sub,"Show identity verification")
+    analytics.trackEvent(req.userContext.userinfo.preferred_username,"Show identity verification")
     var response = await axios.get(process.env.TENANT_URL + 
         '/api/v1/users/'+req.userContext.userinfo.sub)
     res.render('identityVerification',{layout: 'subpage', loa: req.userContext.userinfo.loa});
@@ -33,7 +33,7 @@ const onfido = new Onfido({
   })
 
   router.post('/loa1/gather', oidc.ensureAuthenticated(), upload.single('document'), async function(req,res,next){
-    analytics.trackEvent(req.userContext.userinfo.sub,"Perform identity verification")
+    analytics.trackEvent(req.userContext.userinfo.preferred_username,"Perform identity verification")
     //disabled until in memory transfer is working with onfido
     //as this demo is hosted on heroku we cannot leverage the filesystem to
     //upload
