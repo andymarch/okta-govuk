@@ -47,6 +47,10 @@ APP_BASE_URL=http://localhost:3000
 API_TOKEN=<your token>
 TOKEN_AUD=<your Audience>
 SERVICE_URL=<your delegation service url>
+
+ONFIDO_API_TOKEN=<token for idp proofing>
+TICKET_SERVICE_URL=<URI for delegated ticket demo - optional>
+
 ```
 
 #### Tenant Setup
