@@ -13,7 +13,7 @@
   "dependencies": {
     "@gompa/node-sass-middleware": "^0.12.0",
     "@okta/jwt-verifier": "^1.0.0",
-    "@okta/oidc-middleware": "^4.4.0",
+    "@okta/oidc-middleware": "^5.0.1",
     "@onfido/api": "^1.1.0",
     "atob": "^2.1.2",
     "axios": "^0.21.1",
